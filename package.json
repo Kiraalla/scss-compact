@@ -1,0 +1,58 @@
+{
+  "name": "scss-compact",
+  "displayName": "SCSS Compact",
+  "description": "A VSCode extension for compiling SCSS/SASS files to CSS with Compact formatting",
+  "version": "0.0.1",
+  "publisher": "scss-compact",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Formatters"
+  ],
+  "activationEvents": [
+    "workspaceContains:**/*.scss",
+    "workspaceContains:**/*.sass"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "scss-compact.compile",
+        "title": "SCSS Compact: Compile SCSS/SASS to CSS"
+      }
+    ],
+    "configuration": {
+      "title": "SCSS Compact",
+      "properties": {
+        "scss-compact.autoCompile": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically compile SCSS/SASS files on save"
+        },
+        "scss-compact.includePaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Additional include paths for SCSS/SASS compilation"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "18.x",
+    "@types/vscode": "^1.74.0",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "sass": "^1.72.0"
+  }
+}
