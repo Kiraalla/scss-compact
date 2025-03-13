@@ -3,7 +3,8 @@
   "displayName": "SCSS Compact",
   "description": "A VSCode extension for compiling SCSS/SASS files to CSS with Compact formatting",
   "version": "0.0.1",
-  "publisher": "scss-compact",
+  "publisher": "kira0522",
+	"icon": "./logo.jpg",
   "license": "MIT",
   "engines": {
     "vscode": "^1.74.0"
