@@ -1,8 +1,8 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
-import * as fs from 'fs';
-import * as sass from 'sass';
 import * as chokidar from 'chokidar';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as sass from 'sass';
+import * as vscode from 'vscode';
 
 let watcher: chokidar.FSWatcher | undefined;
 
@@ -60,6 +60,13 @@ function compileSassFile(filePath: string) {
   try {
     const config = vscode.workspace.getConfiguration('scss-compact');
     const includePaths = config.get<string[]>('includePaths') || [];
+    const ignoreUnderscoreFiles = config.get<boolean>('ignoreUnderscoreFiles');
+
+    // 检查文件名是否以下划线开头
+    const fileName = path.basename(filePath);
+    if (ignoreUnderscoreFiles && fileName.startsWith('_')) {
+      return;
+    }
 
     const result = sass.compile(filePath, {
       style: 'compressed',

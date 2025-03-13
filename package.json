@@ -2,7 +2,7 @@
   "name": "scss-compact",
   "displayName": "SCSS Compact",
   "description": "A VSCode extension for compiling SCSS/SASS files to CSS with Compact formatting",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "kira0522",
 	"icon": "./logo.jpg",
   "license": "MIT",
@@ -39,6 +39,11 @@
           },
           "default": [],
           "description": "Additional include paths for SCSS/SASS compilation"
+        },
+        "scss-compact.ignoreUnderscoreFiles": {
+          "type": "boolean",
+          "default": true,
+          "description": "Ignore SCSS/SASS files that start with an underscore (_)"
         }
       }
     }

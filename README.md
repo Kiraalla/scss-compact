@@ -1,39 +1,41 @@
 # SCSS Compact
 
-A VSCode extension for compiling SCSS/SASS files to CSS with Compact formatting.
+一个用于将SCSS/SASS文件编译为CSS并采用紧凑格式的VSCode扩展。
 
-## Features
+## 扩展信息(https://marketplace.visualstudio.com/items?itemName=kira0522.scss-compact)
 
-- Automatically compiles SCSS/SASS files to CSS when saving
-- Formats CSS output in a compact style
-- Supports custom include paths for SASS compilation
+## 功能特点
 
-## Requirements
+- 保存时自动将SCSS/SASS文件编译为CSS
+- 以紧凑风格格式化CSS输出
+- 支持SASS编译的自定义包含路径
+
+## 系统要求
 
 - Visual Studio Code ^1.98.0
 
-## Extension Settings
+## 扩展设置
 
-This extension contributes the following settings:
+此扩展提供以下设置项：
 
-* `scss-compact.autoCompile`: Enable/disable automatic compilation on save (default: true)
-* `scss-compact.includePaths`: Additional include paths for SCSS/SASS compilation
+* `scss-compact.autoCompile`：启用/禁用保存时自动编译（默认值：true）
+* `scss-compact.includePaths`：SCSS/SASS编译的额外包含路径
 
-## Usage
+## 使用方法
 
-1. Install the extension
-2. Open a SCSS/SASS file
-3. Save the file to automatically compile to CSS, or use the command "SCSS Compact: Compile SCSS/SASS to CSS"
+1. 安装扩展
+2. 打开SCSS/SASS文件
+3. 保存文件以自动编译为CSS，或使用命令"SCSS Compact: Compile SCSS/SASS to CSS"
 
-## Known Issues
+## 已知问题
 
-None at this time.
+目前暂无已知问题。
 
-## Release Notes
+## 更新日志
 
 ### 0.0.1
 
-Initial release of SCSS Compact
-- Basic SCSS/SASS compilation
-- Compact CSS formatting
-- Auto-compile on save
+SCSS Compact 首次发布
+- 基本的SCSS/SASS编译功能
+- 紧凑的CSS格式化
+- 保存时自动编译

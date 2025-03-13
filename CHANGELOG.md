@@ -1,9 +1,17 @@
-# Change Log
+# 更新日志
 
-All notable changes to the "a" extension will be documented in this file.
+## [0.0.2] - 2023-12-20
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+### 新增
+- 添加了对下划线文件的忽略选项
 
-## [Unreleased]
+### 修复
+- 修复了一些小问题
 
-- Initial release
+## [0.0.1] - 2023-12-19
+
+### 新增
+- 初始版本发布
+- 基本的SCSS/SASS编译功能
+- 紧凑的CSS格式化
+- 保存时自动编译功能
