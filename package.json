@@ -1,8 +1,8 @@
 {
   "name": "scss-compact",
   "displayName": "SCSS Compact",
-  "description": "A VSCode extension for compiling SCSS/SASS files to CSS with Compact formatting",
-  "version": "0.0.2",
+  "description": "VSCode扩展，用于将SCSS/SASS文件编译为具有紧凑格式的CSS",
+  "version": "0.0.3",
   "publisher": "kira0522",
 	"icon": "./logo.jpg",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "commands": [
       {
         "command": "scss-compact.compile",
-        "title": "SCSS Compact: Compile SCSS/SASS to CSS"
+        "title": "SCSS紧凑型：将SCSS/SASS编译为CSS"
       }
     ],
     "configuration": {
@@ -30,7 +30,7 @@
         "scss-compact.autoCompile": {
           "type": "boolean",
           "default": true,
-          "description": "Automatically compile SCSS/SASS files on save"
+          "description": "保存时自动编译SCSS/SASS文件"
         },
         "scss-compact.includePaths": {
           "type": "array",
@@ -38,12 +38,17 @@
             "type": "string"
           },
           "default": [],
-          "description": "Additional include paths for SCSS/SASS compilation"
+          "description": "其他包括SCSS/SASS编译的路径"
         },
         "scss-compact.ignoreUnderscoreFiles": {
           "type": "boolean",
           "default": true,
-          "description": "Ignore SCSS/SASS files that start with an underscore (_)"
+          "description": "忽略以虚线（_）开头的SCSS/SASS文件"
+        },
+        "scss-compact.outputCompact": {
+          "type": "boolean",
+          "default": true,
+          "description": "将CSS输出为紧凑格式，设为false则输出为展开格式"
         }
       }
     }

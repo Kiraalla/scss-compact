@@ -61,6 +61,7 @@ function compileSassFile(filePath: string) {
     const config = vscode.workspace.getConfiguration('scss-compact');
     const includePaths = config.get<string[]>('includePaths') || [];
     const ignoreUnderscoreFiles = config.get<boolean>('ignoreUnderscoreFiles');
+    const outputCompact = config.get<boolean>('outputCompact') ?? true;
 
     // 检查文件名是否以下划线开头
     const fileName = path.basename(filePath);
@@ -73,14 +74,14 @@ function compileSassFile(filePath: string) {
       loadPaths: includePaths
     });
 
-    // 将编译后的CSS转换为Compact格式
-    const compactCss = formatCompact(result.css);
+    // 根据配置决定是否使用紧凑格式
+    const outputCss = outputCompact ? formatCompact(result.css) : formatExpanded(result.css);
 
     // 生成输出文件路径
     const outputPath = filePath.replace(/\.(scss|sass)$/, '.css');
 
     // 写入文件
-    fs.writeFileSync(outputPath, compactCss);
+    fs.writeFileSync(outputPath, outputCss);
 
     vscode.window.showInformationMessage(`已成功编译 ${path.basename(filePath)}`);
   } catch (error) {
@@ -111,6 +112,34 @@ function formatCompact(css: string): string {
       .join('; ');
 
     return `{ ${formattedProperties} }`;
+  });
+
+  return css.trim();
+}
+
+function formatExpanded(css: string): string {
+  // 移除多余的空白和注释
+  css = css.replace(/\/\*[^*]*\*+([^/*][^*]*\*+)*\//g, '');
+  css = css.replace(/[\n\r\t]+/g, '');
+  css = css.replace(/\s*([{}:;,])\s*/g, '$1');
+
+  // 在选择器之间添加换行
+  css = css.replace(/}/g, '}\n\n');
+
+  // 在每个规则块内部格式化属性
+  css = css.replace(/{([^}]+)}/g, (match, properties) => {
+    properties = properties.trim();
+    if (!properties) {
+      return '{}\n';
+    }
+
+    const formattedProperties = properties
+      .split(';')
+      .filter((prop: string) => prop.trim())
+      .map((prop: string) => `\n    ${prop.trim()}`)
+      .join(';');
+
+    return `{${formattedProperties}\n}`;
   });
 
   return css.trim();

@@ -20,6 +20,7 @@
 
 * `scss-compact.autoCompile`：启用/禁用保存时自动编译（默认值：true）
 * `scss-compact.includePaths`：SCSS/SASS编译的额外包含路径
+* `scss-compact.outputCompact`：将CSS输出为紧凑格式，设为false则输出为展开格式（默认值：true）
 
 ## 使用方法
 
@@ -30,12 +31,3 @@
 ## 已知问题
 
 目前暂无已知问题。
-
-## 更新日志
-
-### 0.0.1
-
-SCSS Compact 首次发布
-- 基本的SCSS/SASS编译功能
-- 紧凑的CSS格式化
-- 保存时自动编译
