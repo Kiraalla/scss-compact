@@ -3,7 +3,7 @@
   "displayName": "SCSS Compact",
   "description": "VSCode扩展，用于将SCSS/SASS文件编译为具有紧凑格式的CSS",
   "version": "0.0.6",
-  "publisher": "kira0522",
+  "publisher": "kiraalla",
 	"icon": "./logo.jpg",
   "license": "MIT",
   "repository": {
