@@ -1,14 +1,11 @@
-import * as chokidar from 'chokidar';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as sass from 'sass';
 import * as vscode from 'vscode';
 
-let watcher: chokidar.FSWatcher | undefined;
-
 export function activate(context: vscode.ExtensionContext) {
   // 注册编译命令
-  let disposable = vscode.commands.registerCommand('scss-compact.compile', () => {
+  const disposable = vscode.commands.registerCommand('scss-compact.compile', () => {
     const editor = vscode.window.activeTextEditor;
     if (editor) {
       compileSassFile(editor.document.uri.fsPath);
@@ -26,34 +23,10 @@ export function activate(context: vscode.ExtensionContext) {
       }
     }
   }, null, context.subscriptions);
-
-  // 启动文件监听
-  startFileWatcher();
 }
 
 export function deactivate() {
-  if (watcher) {
-    watcher.close();
-  }
-}
-
-function startFileWatcher() {
-  const workspaceFolders = vscode.workspace.workspaceFolders;
-  if (!workspaceFolders) {
-    return;
-  }
-
-  workspaceFolders.forEach(folder => {
-    const pattern = new vscode.RelativePattern(folder, '**/*.{scss,sass}');
-    const watcher = vscode.workspace.createFileSystemWatcher(pattern);
-
-    watcher.onDidChange(uri => {
-      const config = vscode.workspace.getConfiguration('scss-compact');
-      if (config.get('autoCompile')) {
-        compileSassFile(uri.fsPath);
-      }
-    });
-  });
+  // 清理资源（如果需要）
 }
 
 function compileSassFile(filePath: string) {
@@ -62,6 +35,8 @@ function compileSassFile(filePath: string) {
     const includePaths = config.get<string[]>('includePaths') || [];
     const ignoreUnderscoreFiles = config.get<boolean>('ignoreUnderscoreFiles');
     const outputCompact = config.get<boolean>('outputCompact') ?? true;
+    const preserveComments = config.get<boolean>('preserveComments') ?? false;
+    const removeCharset = config.get<boolean>('removeCharset') ?? true;
     let outputPath = config.get<string>('outputPath') || '';
     const outputPathFormat = config.get<string>('outputPathFormat') || 'same';
     const outputExtension = config.get<string>('outputExtension') || '.css';
@@ -72,13 +47,20 @@ function compileSassFile(filePath: string) {
       return;
     }
 
+    // 根据是否保留注释选择编译样式
+    // compressed 会移除注释，expanded 会保留注释
     const result = sass.compile(filePath, {
-      style: 'compressed',
+      style: preserveComments ? 'expanded' : 'compressed',
       loadPaths: includePaths
     });
 
     // 根据配置决定是否使用紧凑格式
-    const outputCss = outputCompact ? formatCompact(result.css) : formatExpanded(result.css);
+    let outputCss = outputCompact ? formatCompact(result.css, preserveComments) : formatExpanded(result.css, preserveComments);
+    
+    // 移除 @charset 声明
+    if (removeCharset) {
+      outputCss = outputCss.replace(/@charset\s+["'][^"']*["']\s*;?\s*/gi, '');
+    }
 
     // 生成输出文件路径
     let finalOutputPath = '';
@@ -181,9 +163,19 @@ function compileSassFile(filePath: string) {
   }
 }
 
-function formatCompact(css: string): string {
-  // 移除多余的空白和注释
-  css = css.replace(/\/\*[^*]*\*+([^/*][^*]*\*+)*\//g, '');
+function formatCompact(css: string, preserveComments: boolean = false): string {
+  // 如果保留注释，先提取所有注释并标记位置
+  const comments: string[] = [];
+  if (preserveComments) {
+    css = css.replace(/\/\*[^*]*\*+([^/*][^*]*\*+)*\//g, (comment) => {
+      comments.push(comment);
+      return `__COMMENT_${comments.length - 1}__`;
+    });
+  } else {
+    // 如果不保留注释，则移除所有注释
+    css = css.replace(/\/\*[^*]*\*+([^/*][^*]*\*+)*\//g, '');
+  }
+  
   css = css.replace(/[\n\r\t]+/g, '');
   css = css.replace(/\s*([{}:;,])\s*/g, '$1');
 
@@ -191,7 +183,7 @@ function formatCompact(css: string): string {
   css = css.replace(/}/g, '}\n');
 
   // 在每个规则块内部保持属性在同一行
-  css = css.replace(/{([^}]+)}/g, (match, properties) => {
+  css = css.replace(/{([^}]+)}/g, (_match, properties) => {
     properties = properties.trim();
     if (!properties) {
       return '{}\n';
@@ -206,12 +198,31 @@ function formatCompact(css: string): string {
     return `{ ${formattedProperties} }`;
   });
 
+  // 如果保留注释，将注释还原并确保单独一行
+  if (preserveComments) {
+    css = css.replace(/__COMMENT_(\d+)__/g, (_match, index) => {
+      return `\n${comments[parseInt(index)]}\n`;
+    });
+    // 清理多余的空行
+    css = css.replace(/\n{3,}/g, '\n\n');
+  }
+
   return css.trim();
 }
 
-function formatExpanded(css: string): string {
-  // 移除多余的空白和注释
-  css = css.replace(/\/\*[^*]*\*+([^/*][^*]*\*+)*\//g, '');
+function formatExpanded(css: string, preserveComments: boolean = false): string {
+  // 如果保留注释，先提取所有注释并标记位置
+  const comments: string[] = [];
+  if (preserveComments) {
+    css = css.replace(/\/\*[^*]*\*+([^/*][^*]*\*+)*\//g, (comment) => {
+      comments.push(comment);
+      return `__COMMENT_${comments.length - 1}__`;
+    });
+  } else {
+    // 如果不保留注释，则移除所有注释
+    css = css.replace(/\/\*[^*]*\*+([^/*][^*]*\*+)*\//g, '');
+  }
+  
   css = css.replace(/[\n\r\t]+/g, '');
   css = css.replace(/\s*([{}:;,])\s*/g, '$1');
 
@@ -219,7 +230,7 @@ function formatExpanded(css: string): string {
   css = css.replace(/}/g, '}\n\n');
 
   // 在每个规则块内部格式化属性
-  css = css.replace(/{([^}]+)}/g, (match, properties) => {
+  css = css.replace(/{([^}]+)}/g, (_match, properties) => {
     properties = properties.trim();
     if (!properties) {
       return '{}\n';
@@ -233,6 +244,15 @@ function formatExpanded(css: string): string {
 
     return `{${formattedProperties}\n}`;
   });
+
+  // 如果保留注释，将注释还原并确保单独一行
+  if (preserveComments) {
+    css = css.replace(/__COMMENT_(\d+)__/g, (_match, index) => {
+      return `\n${comments[parseInt(index)]}\n`;
+    });
+    // 清理多余的空行
+    css = css.replace(/\n{3,}/g, '\n\n');
+  }
 
   return css.trim();
 }

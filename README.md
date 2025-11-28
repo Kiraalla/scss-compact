@@ -2,7 +2,11 @@
 
 一个用于将SCSS/SASS文件编译为CSS并采用紧凑格式的VSCode扩展。
 
-## 扩展信息(https://marketplace.visualstudio.com/items?itemName=kira0522.scss-compact)
+## 链接
+
+- [VSCode 市场](https://marketplace.visualstudio.com/items?itemName=kira0522.scss-compact)
+- [GitHub 仓库](https://github.com/Kiraalla/scss-compact)
+- [问题反馈](https://github.com/Kiraalla/scss-compact/issues)
 
 ## 功能特点
 
@@ -21,8 +25,10 @@
 * `scss-compact.autoCompile`：启用/禁用保存时自动编译（默认值：true）
 * `scss-compact.includePaths`：SCSS/SASS编译的额外包含路径，用于指定@import或@use引入的SCSS模块的查找路径
 * `scss-compact.outputCompact`：将CSS输出为紧凑格式，设为false则输出为展开格式（默认值：true）
+* `scss-compact.preserveComments`：在输出的CSS中保留注释（默认值：false）
+* `scss-compact.removeCharset`：移除输出CSS中的@charset声明（默认值：true）
 * `scss-compact.outputPath`：CSS文件的输出路径，留空则输出到与SCSS/SASS文件相同的目录
-* `scss-compact.outputExtension`，可以自定义CSS输出后缀
+* `scss-compact.outputExtension`：可以自定义CSS输出后缀（默认值：.css）
 * `scss-compact.outputPathFormat`：输出路径格式，可选值：
   - `same`：与源文件相同目录（默认值）
   - `custom`：使用自定义输出目录（由outputPath指定）
@@ -154,4 +160,16 @@ styles/
 
 ## 已知问题
 
-目前暂无已知问题。
+目前暂无已知问题。如有问题请在 [GitHub Issues](https://github.com/Kiraalla/scss-compact/issues) 提交反馈。
+
+## 版本历史
+
+查看 [CHANGELOG.md](CHANGELOG.md) 了解详细的版本更新历史。
+
+## 贡献
+
+欢迎提交 Pull Request 或 Issue 到 [GitHub 仓库](https://github.com/Kiraalla/scss-compact)。
+
+## 许可证
+
+本项目采用 MIT 许可证。详见 [LICENSE](LICENSE) 文件。

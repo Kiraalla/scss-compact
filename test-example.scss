@@ -1,0 +1,23 @@
+/* 这是一个测试文件 */
+.container {
+  /* 容器样式 */
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  .header {
+    /* 头部样式 */
+    background-color: #333;
+    color: white;
+    padding: 20px;
+  }
+}
+
+/* 按钮样式 */
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: blue;
+  color: white;
+  border-radius: 4px;
+}

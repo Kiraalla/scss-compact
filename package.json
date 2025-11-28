@@ -2,7 +2,7 @@
   "name": "scss-compact",
   "displayName": "SCSS Compact",
   "description": "VSCode扩展，用于将SCSS/SASS文件编译为具有紧凑格式的CSS",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publisher": "kira0522",
 	"icon": "./logo.jpg",
   "license": "MIT",
@@ -72,6 +72,16 @@
           "type": "string",
           "default": ".css",
           "description": "编译输出文件后缀名，默认为.css"
+        },
+        "scss-compact.preserveComments": {
+          "type": "boolean",
+          "default": false,
+          "description": "在输出的CSS中保留注释"
+        },
+        "scss-compact.removeCharset": {
+          "type": "boolean",
+          "default": true,
+          "description": "移除输出CSS中的@charset声明"
         }
       }
     }
