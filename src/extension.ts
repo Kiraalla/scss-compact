@@ -64,6 +64,7 @@ function compileSassFile(filePath: string) {
     const outputCompact = config.get<boolean>('outputCompact') ?? true;
     let outputPath = config.get<string>('outputPath') || '';
     const outputPathFormat = config.get<string>('outputPathFormat') || 'same';
+    const outputExtension = config.get<string>('outputExtension') || '.css';
 
     // 检查文件名是否以下划线开头
     const fileName = path.basename(filePath);
@@ -87,7 +88,7 @@ function compileSassFile(filePath: string) {
     switch (outputPathFormat) {
       case 'same':
         // 默认行为：输出到相同目录
-        finalOutputPath = filePath.replace(/\.(scss|sass)$/, '.css');
+        finalOutputPath = filePath.replace(/\.(scss|sass)$/, outputExtension);
         break;
       
       case 'custom':
@@ -105,10 +106,10 @@ function compileSassFile(filePath: string) {
           if (!fs.existsSync(targetOutputPath)) {
             fs.mkdirSync(targetOutputPath, { recursive: true });
           }
-          finalOutputPath = path.join(targetOutputPath, `${fileNameWithoutExt}.css`);
+          finalOutputPath = path.join(targetOutputPath, `${fileNameWithoutExt}${outputExtension}`);
         } else {
           // 如果未设置输出路径，回退到默认行为
-          finalOutputPath = filePath.replace(/\.(scss|sass)$/, '.css');
+          finalOutputPath = filePath.replace(/\.(scss|sass)$/, outputExtension);
         }
         break;
       
@@ -134,7 +135,7 @@ function compileSassFile(filePath: string) {
               }
             } else {
               // 如果无法确定工作区，回退到默认行为
-              return filePath.replace(/\.(scss|sass)$/, '.css');
+              return filePath.replace(/\.(scss|sass)$/, outputExtension);
             }
           }
 
@@ -149,10 +150,10 @@ function compileSassFile(filePath: string) {
             if (!fs.existsSync(newOutputDir)) {
               fs.mkdirSync(newOutputDir, { recursive: true });
             }
-            finalOutputPath = path.join(newOutputDir, `${fileNameWithoutExt}.css`);
+            finalOutputPath = path.join(newOutputDir, `${fileNameWithoutExt}${outputExtension}`);
           } else {
             // 如果无法确定工作区，回退到默认行为
-            finalOutputPath = filePath.replace(/\.(scss|sass)$/, '.css');
+            finalOutputPath = filePath.replace(/\.(scss|sass)$/, outputExtension);
           }
         } else {
           // 如果未设置输出路径，回退到默认行为

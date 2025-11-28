@@ -22,6 +22,7 @@
 * `scss-compact.includePaths`：SCSS/SASS编译的额外包含路径，用于指定@import或@use引入的SCSS模块的查找路径
 * `scss-compact.outputCompact`：将CSS输出为紧凑格式，设为false则输出为展开格式（默认值：true）
 * `scss-compact.outputPath`：CSS文件的输出路径，留空则输出到与SCSS/SASS文件相同的目录
+* `scss-compact.outputExtension`，可以自定义CSS输出后缀
 * `scss-compact.outputPathFormat`：输出路径格式，可选值：
   - `same`：与源文件相同目录（默认值）
   - `custom`：使用自定义输出目录（由outputPath指定）
